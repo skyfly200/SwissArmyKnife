@@ -1,0 +1,14 @@
+html
+  head
+    title= title
+  body
+    h1= message
+    h2= error
+    
+    ul
+      each station in list
+        li
+          h3= station.name + " - " + station.lastip
+          h4= station.signal + " dBm / " + station.noisefloor + " dBm"
+          h4= "CCQ: " + station.ccq + "%"
+          

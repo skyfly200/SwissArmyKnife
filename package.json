@@ -1,0 +1,17 @@
+{
+  "name": "swiss-army-knife",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Skyler Fly-Wilson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "express-basic-auth": "^1.1.2",
+    "pug": "^2.0.0-rc.4",
+    "webpack": "^3.6.0"
+  }
+}
