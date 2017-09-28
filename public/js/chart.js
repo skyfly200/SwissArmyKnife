@@ -34,7 +34,13 @@ function chartSelectHandler(event) {
 function getChart(ap_id, chart_id) {
   // You can use “this” to refer to the selected element.
   var url = "/data/" + ap_id;
+  // show loader
+  var loader = $(".load-wrapp");
+  loader.show();
   $.ajax({url: url}).done(function( data ) {
+    // hide loader
+    loader.hide();
+    // draw chart
     drawChart(data, chart_id);
   });
 }
