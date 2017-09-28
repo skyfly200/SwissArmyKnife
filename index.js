@@ -1,3 +1,7 @@
+// Nedernet Swiss Army Knife
+// Written by Skyler Fly-Wilson 09/27/17
+// Creative Commons Attribution-ShareAlike 4.0 International License
+
 const exec = require('child_process').exec;
 const express = require('express');
 const app = express();
