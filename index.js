@@ -27,21 +27,12 @@ app.use(basicAuth({
 // server static public directory
 app.use(express.static('public'))
 
-// list station info
-app.get('/list/:device', function (req, res) {
-  if (req.params.device in devices) {
-    var device = devices[req.params.device];
-    runSSH(device, command, (r)=> {
-      res.render('list', { title: "Station List", message: 'Station List', list: r.data, err: r.error });
-    });
-
-  } else {
-    res.render('list', { title: "Error", message: 'Invalid Device ID#', list: [], err: '' })
-  }
+app.get('/', function (req, res) {
+  res.render('dashboard', { title: "AP Graphs", message: 'AP Graphs', devices: devices});
 })
 
 app.get('/graphs', function (req, res) {
-  res.render('graph', { title: "AP Graphs", message: 'AP Graphs', devices: devices, charts: charts});
+  res.render('graph', { title: "Dashboard - Nedernet SAK", message: 'AP Graphs', devices: devices, charts: charts});
 })
 
 app.get('/data/:device', function (req, res) {

@@ -4,14 +4,30 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack --config webpack.dev.js"
   },
   "author": "Skyler Fly-Wilson",
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.4",
     "express-basic-auth": "^1.1.2",
+    "jquery": "^3.2.1",
     "pug": "^2.0.0-rc.4",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "webpack": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.0",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.6.0",
+    "webpack-merge": "^4.1.0"
   }
 }

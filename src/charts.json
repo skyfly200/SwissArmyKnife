@@ -1,0 +1,78 @@
+{
+  "bubble_q": {
+    "type": "bubble",
+    "columns": [
+      {"cfg": {"type": "string", "label": "ID"}, "value": "name" },
+      {"cfg": {"type": "number", "label": "CCQ"}, "value": "ccq" },
+      {"cfg": {"type": "number", "label": "Capacity"}, "value": ["airmax", "capacity"] },
+      {"cfg": {"type": "number", "label": "Signal"}, "value": "signal" }
+    ],
+    "options": {
+      "height": "800",
+      "title": "AP Station Metrics",
+      "hAxis": {"title": "CCQ"},
+      "vAxis": {"title": "Capacity"},
+      "colorAxis": {"values": ["-80", "-70", "-60"], "colors": ["red", "yellow", "green"]},
+      "legend": "none"
+     }
+  },
+  "ccq_signal": {
+    "type": "scatter",
+    "columns": [
+      {"cfg": {"type": "number", "label": "Signal"}, "value": "signal" },
+      {"cfg": {"type": "number", "label": "CCQ"}, "value": "ccq" },
+      {"cfg": {"type": "string", "role": "tooltip"}, "value": "name" }
+    ],
+    "options": {
+      "height": "600",
+      "title": "AP Quality Metrics",
+      "hAxis": {"title": "Signal"},
+      "vAxis": {"title": "CCQ"},
+      "legend": "none"
+     }
+  },
+  "signal_histo": {
+    "type": "histogram",
+    "columns": [
+      {"cfg": {"type": "string", "label": "Name"}, "value": "name" },
+      {"cfg": {"type": "number", "label": "Signal"}, "value": "signal" }
+    ],
+    "options": {
+      "height": "600",
+      "title": "AP Signals Histogram",
+      "hAxis": {"title": "Signal"},
+      "legend": "none"
+     }
+  },
+  "rx_tx": {
+    "type": "scatter",
+    "columns": [
+      {"cfg": {"type": "number", "label": "RX"}, "value": "rx" },
+      {"cfg": {"type": "number", "label": "TX"}, "value": "tx" },
+      {"cfg": {"type": "string", "role": "tooltip"}, "value": "name" }
+    ],
+    "options": {
+      "height": "600",
+      "title": "AP Bandwidth Metrics",
+      "hAxis": {"title": "RX"},
+      "vAxis": {"title": "TX"},
+      "legend": "none"
+     }
+  },
+  "station_table": {
+    "type": "table",
+    "columns": [
+      {"cfg": {"type": "string", "label": "Name"}, "value": "name" },
+      {"cfg": {"type": "number", "label": "Signal"}, "value": "signal" },
+      {"cfg": {"type": "number", "label": "Noise"}, "value": "noisefloor" },
+      {"cfg": {"type": "number", "label": "CCQ"}, "value": "ccq" },
+      {"cfg": {"type": "number", "label": "TX"}, "value": "tx" },
+      {"cfg": {"type": "number", "label": "RX"}, "value": "rx" },
+      {"cfg": {"type": "string", "label": "IP"}, "value": "lastip" },
+      {"cfg": {"type": "string", "label": "MAC"}, "value": "mac" }
+    ],
+    "options": {
+      "title": "Stations"
+    }
+  }
+}

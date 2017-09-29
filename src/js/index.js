@@ -1,36 +1,29 @@
+import $ from "jquery";
+
 // Load the Visualization API and the corechart package.
 google.charts.load('current', {'packages':['corechart', 'table']});
 
 var device = 0;
-var chart_type = 'bubble_q';
-
-var dObj;
 
 // Set a callback to run when the Google Visualization API is loaded.
 google.charts.setOnLoadCallback(load);
 
 document.addEventListener('DOMContentLoaded',function() {
     document.querySelector('select[name="device"]').onchange = deviceSelectHandler;
-    document.querySelector('select[name="chart_type"]').onchange = chartSelectHandler;
-    document.getElementById("refresh").addEventListener("click", function(event){
-        event.preventDefault();
-        load();
-    });
 },false);
 
 // call handler on default selection at load
 function load() {
-  getChart(device, chart_type);
+  drawDashboard(device);
 }
 
 function deviceSelectHandler(event) {
     if(event.target.value) device = event.target.value;
-    getChart(device, chart_type);
+    drawDashboard(device);
 }
 
-function chartSelectHandler(event) {
-    if(event.target.value) chart_type = event.target.value;
-    getChart(device, chart_type);
+function drawDashboard(device) {
+  getChart(device, chart_type);
 }
 
 function getChart(ap_id, chart_id) {
@@ -53,8 +46,6 @@ function getChart(ap_id, chart_id) {
 function drawChart(data_obj, id) {
   $.getJSON("/charts.json", function(charts) {
     var graph = charts[id];
-
-    dObj = data_obj;
 
     // Create the data table.
     var data = new google.visualization.DataTable();

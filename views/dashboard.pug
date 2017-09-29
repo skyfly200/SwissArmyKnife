@@ -1,0 +1,23 @@
+html
+  head
+    title= title
+    script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
+    script(type="text/javascript" src="/js/bundle.js")
+  body
+    h1= message
+    
+    #ap-select 
+      form
+        select(name="device")
+          each device, index in devices
+            option(value=index)= device.name + " ( " + device.ip + " )"
+
+      
+    include includes/loader.pug
+          
+    #guages
+      
+    #bubble_q
+      
+    #histo
+          
