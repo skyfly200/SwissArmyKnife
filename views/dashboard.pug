@@ -11,6 +11,8 @@ html
         select(name="device")
           each device, index in devices
             option(value=index)= device.name + " ( " + device.ip + " )"
+            
+        button(id="refresh") Refresh
 
       
     include includes/loader.pug
