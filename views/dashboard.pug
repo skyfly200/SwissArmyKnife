@@ -1,25 +1,31 @@
 html
   head
-    title= title
+    title Dashboard
     script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
     script(type="text/javascript" src="/js/bundle.js")
   body
-    h1= message
-    
-    #ap-select 
-      form
-        select(name="device")
-          each device, index in devices
-            option(value=index)= device.name + " ( " + device.ip + " )"
-            
-        button(id="refresh") Refresh
+    #menu
+      h1 AP Dashboard
+      
+      #ap-select 
+        form
+          select(name="device")
+            each device, index in devices
+              option(value=index)= device.name + " ( " + device.ip + " )"
+              
+          button(id="refresh") Refresh
 
-      
-    include includes/loader.pug
-          
-    #guages
-      
-    #bubble_q
-      
-    #histo
-          
+    #content
+      include includes/loader.pug
+            
+      #guages
+        
+      #display
+        
+      #bubble_q
+        
+      #histo
+            
+      #bandwidth
+        
+      #table

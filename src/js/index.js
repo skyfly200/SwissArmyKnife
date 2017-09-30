@@ -43,9 +43,11 @@ function drawDashboard(device) {
     // hide loader
     loader.hide();
     // draw charts
-    // TODO: import charts to draw from dashboard.json file and dynamicly draw them all
+    // TODO: import charts to draw from dashboard.json file and dynamicly draw them al
     drawChart(data, "bubble_q", "bubble_q");
     drawChart(data, "signal_histo", "histo");
+    drawChart(data, "rx_tx", "bandwidth");
+    drawChart(data, "station_table", "table");
   });
 }
 
