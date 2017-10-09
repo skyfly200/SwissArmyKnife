@@ -1,6 +1,7 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -13,6 +14,7 @@ module.exports = merge(common, {
     }),
     new webpack.optimize.UglifyJsPlugin({
        sourceMap: true
-    })
+    }),
+    new CleanWebpackPlugin(['public']),
   ]
 });

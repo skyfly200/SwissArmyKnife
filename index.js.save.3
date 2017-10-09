@@ -1,0 +1,148 @@
+// Nedernet Swiss Army Knife
+// Written by Skyler Fly-Wilson 09/27/17
+// Creative Commons Attribution-ShareAlike 4.0 International License
+
+// contant variables for ssh session
+const key = './.ssh/nededge_dsa';
+const devices = require('./devices').devices;
+const exec = require('child_process').exec;
+const command = 'wstalist';
+
+// express
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+
+// mongo DB info
+const MongoClient = require('mongodb').MongoClient;
+const uri = require('./db-creds').uri;
+
+// user auth setup
+const crypto = require('crypto');
+const basicAuth = require('express-basic-auth');
+var authObj = {
+    authorizer: checkAuth,
+    authorizeAsync: true,
+    unauthorizedResponse: getUnauthorizedResponse,
+    challenge: true,
+    realm: 'Hsu8e4Ds3x2sd3'
+};
+
+
+// user auth functions
+var genRandomString = function(length){
+    return crypto.randomBytes(Math.ceil(length/2)).toString('hex').slice(0,length);
+};
+
+var sha512 = function(password, salt){
+    var hash = crypto.createHmac('sha512', new Buffer(salt)); /** Hashing algorithm sha512 */
+    hash.update(new Buffer(password));
+    var value = hash.digest('hex');
+    return { salt:salt, passwordHash:value };
+};
+
+// returns the id
+function addUser(username, password, email, cb) {
+  var salt = genRandomString(16); /** Gives us salt of length 16 */
+  var passwordData = sha512(password, salt);
+  var d = new Date();
+  var user = {
+    user: username,
+    salt: passwordData.salt,
+    hash: passwordData.passwordHash,
+    perms: ['stats'],
+    email: email,
+    created: d
+  };
+  MongoClient.connect(uri, function(err, db) {
+    db.collection('users').insertOne(user, function(obj) { cb(obj) });
+    db.close();
+  });
+}
+
+const charts = require('./src/charts.json');
+
+// mongo db command
+MongoClient.connect(uri, function(err, db) {
+
+  //db.close();
+});
+
+// use pug templating engine
+app.set('view engine', 'pug');
+
+// use basicAuth for user authorizations scheme
+app.use(basicAuth( authObj ))
+
+// server static public directory
+app.use(express.static('public'))
+
+//support parsing of application/json type post data
+app.use(bodyParser.json());
+ 
+//support parsing of application/x-www-form-urlencoded post data
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/', function (req, res) {
+  res.render('index');
+})
+
+app.get('/new-user', function (req, res) {
+  res.render('user-form');
+})
+
+app.post('/add-user', function (req, res) {
+  addUser(req.body.username, req.body.password, req.body.email, (obj)=>{
+    //res.render('user-conf', obj);
+    res.send(obj);
+  });
+})
+
+app.get('/data/:device', function (req, res) {
+  if (req.params.device in devices) {
+    var device = devices[req.params.device];
+    runSSH(device, command, (r)=> {res.json(r)});
+  } else {
+    res.send('Invalid Device ID');
+  }
+});
+
+app.listen(80, function () {
+  console.log('App listening on port 80!')
+});
+
+function checkAuth(username, password, cb) {
+  MongoClient.connect(uri, function(err, db) {
+    if (err === null) {
+      var user = db.collection('users').find({user: username});
+      db.close();
+      if (user.salt) {
+        console.log(password);
+        var passwordData = sha512(password, user.salt);
+        return cb(null, passwordData.passwordHash === user.hash);
+      }
+    } else {
+      return cb(err, false);
+    }
+  });
+}
+
+function getUnauthorizedResponse(req) {
+    return req.auth ?
+        ('Credentials ' + req.auth.user + ':' + req.auth.password + ' rejected') :
+        'No credentials provided'
+}
+
+function runSSH(device, command, callback) {
+  var ip = device.ip;
+  var user = device.user;
+  var ssh_command = 'ssh -q -i ' + key + ' ' + user + '@' + ip + ' ' + command;
+
+  exec(ssh_command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+    }
+    var data = JSON.parse(stdout);
+    callback({"data": data, "error": stderr});
+  });
+}

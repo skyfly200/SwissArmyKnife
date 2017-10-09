@@ -1,0 +1,17 @@
+html
+  head
+    title Add User
+      
+  body
+    h1 Add a User
+    
+    form(action="/add-user" method="post")
+      label Username
+      input(type="text" name="username" required)
+      label Password
+      input(type="password" name="password" required)
+      label Email
+      input(type="email" name="email" required)
+      input(type="submit")
+        
+        

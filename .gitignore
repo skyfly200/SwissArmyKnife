@@ -24,3 +24,7 @@ node_modules/
 
 # device list
 devices.json
+
+# DB Credentials
+db-creds.json
+db-creds-txt

@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack --config webpack.dev.js"
+    "watch": "webpack --watch --config webpack.dev.js",
+    "start": "webpack --config webpack.dev.js",
+    "serve": "sudo node index.js",
+    "mon": "sudo nodemon index.js",
+    "kill": "sudo killall node"
   },
   "author": "Skyler Fly-Wilson",
   "license": "ISC",
@@ -13,6 +17,7 @@
     "express": "^4.15.4",
     "express-basic-auth": "^1.1.2",
     "jquery": "^3.2.1",
+    "mongodb": "^2.2.31",
     "pug": "^2.0.0-rc.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -24,6 +29,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.17",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.0",
     "style-loader": "^0.18.2",

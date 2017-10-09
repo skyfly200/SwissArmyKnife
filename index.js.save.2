@@ -1,0 +1,22 @@
+const exec = require('child_process').exec;
+const express = require('express');
+const app = express();
+
+const key = '.ssh/nededge_dsa';
+const user = 'root';
+const ip = '192.168.126.3';
+const command = 'wstalist';
+
+app.get('/', function (req, res) {
+  var ssh_command = 'ssh -q -i ' + key + ' ' + user + '@' + ip + ' ' + command;
+
+  exec(ssh_command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+    }
+    var stdout = JSON.parse(stdout);
+    var r = {stdout, stderr};
+    console.log(r);
+    res.json(r);
+  });
+});
