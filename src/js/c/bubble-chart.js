@@ -5,7 +5,7 @@ import Chart from './chart.js';
 class BubbleChart extends Chart {
   constructor(props) {
     super(props);
-    this.state = {data: {}, options: {}};
+    //this.state = {data: {}, options: {}};
   }
   drawCharts() {
     var data = google.visualization.arrayToDataTable(this.props.data);

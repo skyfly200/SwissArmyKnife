@@ -1,9 +1,10 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const auth = require('./auth');
-const devices = require('./devices').devices;
+//const dev = require('./devices');
+const devices = require('./devices.json').devices;
 const ssh = require('./ssh');
 
 // use basicAuth for user authorizations scheme

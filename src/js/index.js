@@ -2,62 +2,72 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// import react components
+import Selector from './c/selector.js';
 import ScatterChart from './c/scatter-chart.js';
 import BubbleChart from './c/bubble-chart.js';
 import Histogram from './c/histogram-chart.js';
+import Table from './c/table-chart.js';
 
-import $ from "jquery";
-import Charts from "../charts.json";
+import charts from "../charts.json";
+const devices = require('../../devices.json').devices;
 
-import '../css/style.css';
+// Load the Visualization API and the corechart package.
+google.charts.load('current', {'packages':["corechart", 'table']});
 
-var options = {
-  dataType: "script",
-  cache: true,
-  url: "https://www.google.com/jsapi",
-};
-$.ajax(options).done(function(){
-  google.load("visualization", "1", {
-    packages:["corechart", 'table'],
-    callback: function() { init();}
-  });
-});
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback( ()=>{ drawDash(0); } );
 
-function init() {
-  var device = 0;
+function drawDash(device) {
   var url = "/data/" + device;
   $.ajax({url: url}).done(function( data ) {
-    let graph_sca = Charts["ccq_signal"];
-    let graph_bub = Charts["bubble_q"];
-    //let graph_his = Charts["signal_histo"];
-    //let data_his = buildArray(data.data, graph_his.columns);
-    let data_sca = buildArray(data.data, graph_sca.columns);
+    // --- React components ---
+    // Graph components
+    // Bubble Quality Graph
+    let graph_bub = charts["bubble_q"];
     let data_bub = buildArray(data.data, graph_bub.columns);
+    const bubbleComp = <BubbleChart
+      graphName="Bubble"
+      options={graph_bub.options}
+      data={data_bub}
+    />;
+    // Scatter Quality Graph
+    let graph_sca = charts["ccq_signal"];
+    let data_sca = buildArray(data.data, graph_sca.columns);
+    const scatterComp = <ScatterChart
+      graphName="Scatter"
+      options={graph_sca.options}
+      data={data_sca}
+    />;
+    // Signal Quality Histogram
+    let graph_his = charts["signal_histo"];
+    let data_his = buildArray(data.data, graph_his.columns);
+    const histoComp = <Histogram
+      graphName="Histo"
+      options={graph_his.options}
+      data={data_his}
+    />;
+    // Table Graph
+    let graph_tab = charts["station_table"];
+    let data_tab = buildArray(data.data, graph_tab.columns);
+    const tableComp = <Table
+      graphName="Table"
+      options={graph_bub.options}
+      data={data_bub}
+    />;
     ReactDOM.render(
       <div>
-        <ScatterChart
-          graphName="Scatter"
-          options={graph_sca.options}
-          data={data_sca}
-        />
-        <BubbleChart
-          graphName="Bubble"
-          options={graph_bub.options}
-          data={data_bub}
-        />
+        <h2>AP: {devices[device].name} - {devices[device].ip}</h2>
+        <Selector devices={devices} selected={device} cb={drawDash}/>
+        {bubbleComp}
+        {scatterComp}
+        {histoComp}
+        {tableComp}
       </div>,
       document.getElementById('root')
     );
   });
 }
-
-// document.addEventListener('DOMContentLoaded',function() {
-//     document.querySelector('select[name="device"]').onchange = deviceSelectHandler;
-//     document.getElementById("refresh").addEventListener("click", function(event){
-//         event.preventDefault();
-//         load();
-//     });
-// },false);
 
 function deviceSelectHandler(event) {
     if(event.target.value) device = event.target.value;
