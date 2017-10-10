@@ -28,17 +28,27 @@ exports.getDeviceByName = function(name, cb) {
 
 // querry list of devices
 
-exports.getDevices = function(subnet, cb) {
+exports.getDevices = function(cb) {
   MongoClient.connect(uri, function(err, db) {
     if (err === null) {
-      db.collection('devices').find({}).then(function(list) {
+      db.collection('devices').find({}).toArray(function(err, list) {
         db.close();
-	      cb(null, list);
+	      cb(err, list);
 	    });
     } else { cb(err, false); }
   });
 }
 
+exports.getDevicesInSubnet = function(subnet, cb) {
+  MongoClient.connect(uri, function(err, db) {
+    if (err === null) {
+      db.collection('devices').find({'subnet': subnet}).toArray(function(err, list) {
+        db.close();
+	      cb(err, list);
+	    });
+    } else { cb(err, false); }
+  });
+}
 
 // adds a device to the devices collection in the database
 exports.addDevice = function(ip, subnet, name, user, key, location, cb) {

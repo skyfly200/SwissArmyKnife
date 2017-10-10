@@ -10,15 +10,17 @@ import Histogram from './c/histogram-chart.js';
 import Table from './c/table-chart.js';
 
 import charts from "../charts.json";
-const devices = require('../../devices.json').devices;
 
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':["corechart", 'table']});
+$.ajax({url: "/devices"}).done(function( data ) {
+  let devices = data;
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':["corechart", 'table']});
 
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback( ()=>{ drawDash(0); } );
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback( ()=>{ drawDash(devices, 0); } );
+});
 
-function drawDash(device) {
+function drawDash(devices, device) {
   var url = "/data/" + device;
   $.ajax({url: url}).done(function( data ) {
     // --- React components ---
@@ -58,7 +60,7 @@ function drawDash(device) {
     ReactDOM.render(
       <div>
         <h2>AP: {devices[device].name} - {devices[device].ip}</h2>
-        <Selector devices={devices} selected={device} cb={drawDash}/>
+        <Selector devices={devices} selected={device} cb={deviceSelectHandler}/>
         {bubbleComp}
         {scatterComp}
         {histoComp}
@@ -69,9 +71,12 @@ function drawDash(device) {
   });
 }
 
-function deviceSelectHandler(event) {
-    if(event.target.value) device = event.target.value;
-    drawDashboard(device);
+function deviceSelectHandler(device) {
+  console.log(device);
+  $.ajax({url: "/devices"}).done(function( data ) {
+    let devices = data;
+    drawDash(devices, device);
+  });
 }
 
 // build array from the station list to convert to a data table
