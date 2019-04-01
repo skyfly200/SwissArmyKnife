@@ -1,7 +1,0 @@
-User Admin
-user: nedernet
-pwd: spectrum
-
-Data User
-user: nedernet-data
-pwd: spectrum
